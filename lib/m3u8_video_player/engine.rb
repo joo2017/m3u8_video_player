@@ -1,21 +1,23 @@
-module Onebox
-  module Engine
-    class M3U8VideoOnebox < Onebox::Engine
-      include Onebox::Engine
+# lib/m3u8_video_player/engine.rb
 
-      # 只匹配 .m3u8 链接
-      matches_regexp(%r{^(https?:)?//.*\.(m3u8)(\?.*)?$}i)
+module M3u8VideoPlayer
+  class Engine < ::Rails::Engine
+    engine_name 'm3u8_video_player'
+    
+    isolate_namespace M3u8VideoPlayer
 
-      def to_html
-        random_id = "video_#{Time.now.to_i}_#{rand(100000000)}"
-        <<-HTML
-          <div class="onebox video-onebox videoWrap">
-            <video id='#{random_id}' class="video-js vjs-default-skin vjs-16-9" controls preload="auto" width="100%" data-setup='{"fluid": true}'>
-              <source src="#{url}" type="application/x-mpegURL">
-            </video>
-          </div>
-        HTML
-      end
+    # This is needed if you want to include engine's routes into the main application's routes.
+    initializer "m3u8_video_player.load_static_assets" do |app|
+      app.middleware.use ::ActionDispatch::Static, "#{root}/public"
     end
+
+    # Include engine's assets (if any) into the main application's asset pipeline.
+    initializer "m3u8_video_player.assets.precompile" do |app|
+      app.config.assets.precompile += %w( m3u8_video_player/application.js m3u8_video_player/application.css )
+    end
+
+    # You can add your engine's configuration here.
+    # For example, you might want to configure some settings or hooks.
+    # You can also load your engine's initializers or dependencies here.
   end
 end
