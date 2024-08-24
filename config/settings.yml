@@ -1,0 +1,6 @@
+plugins:
+  m3u8_video_player_enabled:
+    default: true
+    client: true
+    type: boolean
+    description: "Enable m3u8 video player with Video.js support"
