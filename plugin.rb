@@ -16,5 +16,4 @@ after_initialize do
 end
 
 # 注册前端的JavaScript和CSS
-register_asset "javascripts/discourse/m3u8_video_player.js"
 register_asset "stylesheets/discourse/m3u8_video_player.scss"
